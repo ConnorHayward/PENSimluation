@@ -1,4 +1,4 @@
-# MaterialOpt
+# PENSimulation
 GEANT4 Simulation for optimizing thickness of shielding.
 
 Simulates various sources of radiation incident on a target. Target thickness and material can be controlled via macro, as can the source type and energy. Includes geometry for detection of scintillation photons in a PMT coupled to the base of the tile, or two SiPMs coupled to the side of the tile.
