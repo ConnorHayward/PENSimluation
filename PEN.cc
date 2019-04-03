@@ -1,8 +1,8 @@
 #include "G4RunManager.hh"
 
-#ifdef G4MULTITHREADED
-#include "G4MTRunManager.hh"
-#endif
+// #ifdef G4MULTITHREADED
+// #include "G4MTRunManager.hh"
+// #endif
 
 #include "G4UImanager.hh"
 
@@ -44,7 +44,7 @@ int main(int argc,char** argv)
   G4String macro;
   G4String session;
 #ifdef G4MULTITHREADED
-  G4int nThreads = 0;
+  G4int nThreads = 1;
 #endif
 
   G4long myseed = 345354;
@@ -69,12 +69,12 @@ int main(int argc,char** argv)
 
   // Construct the default run manager
   //
-#ifdef G4MULTITHREADED
-  G4MTRunManager * runManager = new G4MTRunManager;
-  if ( nThreads > 0 ) runManager->SetNumberOfThreads(nThreads);
-#else
+// #ifdef G4MULTITHREADED
+//   G4MTRunManager * runManager = new G4MTRunManager;
+//   if ( nThreads > 0 ) runManager->SetNumberOfThreads(nThreads);
+//#else
   G4RunManager * runManager = new G4RunManager;
-#endif
+//#endif
 
   // Seed the random number generator manually
   G4Random::setTheSeed(myseed);
