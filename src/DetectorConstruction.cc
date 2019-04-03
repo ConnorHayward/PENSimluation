@@ -379,7 +379,7 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
   G4int rindexEntries = 0;
   ifstream ReadRindex;
 
-  G4String rindex_file="/home/iwsatlas1/hayward/Documents/LOSim/input_files/rindexScint.txt";
+  G4String rindex_file="../input_files/rindexScint.txt";
   ReadRindex.open(rindex_file);
 
   if(ReadRindex.is_open())
@@ -401,7 +401,7 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
   G4int scintEntries = 0;
   ifstream ReadScint;
 
-  G4String Scint_file="/home/iwsatlas1/hayward/Documents/LOSim/input_files/pTP_emission.txt";
+  G4String Scint_file="../input_files/pTP_emission.txt";
   ReadScint.open(Scint_file);
 
   if(ReadScint.is_open())
@@ -424,7 +424,7 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
   G4double Absorb[501] = {0};
 
   ifstream ReadAbsorb;
-  G4String ReadAbsorbLength="/home/iwsatlas1/hayward/Documents/LOSim/input_files/PlasticBulkAbsorb2.cfg";
+  G4String ReadAbsorbLength="../input_files/PlasticBulkAbsorb2.cfg";
 
   ReadAbsorb.open(ReadAbsorbLength);
   if (ReadAbsorb.is_open())
@@ -446,7 +446,7 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
   G4int wlsScintEntries = 0;
   ifstream ReadWLSScint;
 
-  G4String wls_Scint_file="/home/iwsatlas1/hayward/Documents/LOSim/input_files/full_popop_emission.cfg";
+  G4String wls_Scint_file="../input_files/full_popop_emission.cfg";
   ReadWLSScint.open(wls_Scint_file);
 
   if(ReadWLSScint.is_open())
@@ -467,7 +467,7 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
   G4double wlsAbsorb[501] = {0};
 
   ifstream ReadWLSAbsorb;
-  G4String ReadWLSAbsorbLength="/home/iwsatlas1/hayward/Documents/LOSim/input_files/scintAbsLen.txt";
+  G4String ReadWLSAbsorbLength="../input_files/scintAbsLen.txt";
 
   ReadWLSAbsorb.open(ReadWLSAbsorbLength);
   if (ReadWLSAbsorb.is_open())
