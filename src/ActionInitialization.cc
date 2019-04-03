@@ -28,6 +28,13 @@
 /// \file ActionInitialization.cc
 /// \brief Implementation of the ActionInitialization class
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// DO NOT EDIT!!!!
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 #include "ActionInitialization.hh"
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"

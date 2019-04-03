@@ -44,6 +44,13 @@ G4ThreadLocal G4OpRayleigh* PhysicsList::fRayleighScatteringProcess = 0;
 G4ThreadLocal G4OpMieHG* PhysicsList::fMieHGScatteringProcess = 0;
 G4ThreadLocal G4OpBoundaryProcess* PhysicsList::fBoundaryProcess = 0;
 
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// DO NOT EDIT!!!!
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 PhysicsList::PhysicsList()
