@@ -83,6 +83,7 @@ void PhysicsList::ConstructParticle()
 
 void PhysicsList::ConstructProcess()
 {
+  //SetVerbose(0);
   AddTransportation();
   ConstructDecay();
   ConstructEM();
@@ -99,6 +100,7 @@ void PhysicsList::ConstructProcess()
 
 void PhysicsList::ConstructDecay()
 {
+
   // Add Decay Process
   G4Decay* theDecayProcess = new G4Decay();
   auto particleIterator=GetParticleIterator();
@@ -271,7 +273,7 @@ void PhysicsList::ConstructOp()
 
 void PhysicsList::SetVerbose(G4int verbose)
 {
-  fVerboseLevel = verbose;
+  fVerboseLevel = 0;
 
   fCerenkovProcess->SetVerboseLevel(fVerboseLevel);
   fScintillationProcess->SetVerboseLevel(fVerboseLevel);

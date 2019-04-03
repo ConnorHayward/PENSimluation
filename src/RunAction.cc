@@ -2,14 +2,13 @@
 #include "G4Timer.hh"
 
 #include "RunAction.hh"
+#include "RunActionMessenger.hh"
 
 #include "G4Run.hh"
 
 #include "Analysis.hh"
-//#include "HistoManager.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
-//#include "Run.hh"
 
 #include "EventAction.hh"
 
@@ -22,18 +21,16 @@
 
 RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* kin)
  : G4UserRunAction(),fDetector(det),fPrimary(kin),
-   fTimer(0)//fRun(0),//fHistoManager(0)
+   fTimer(0)
 {
   fTimer = new G4Timer;
   fMan = G4AnalysisManager::Instance();
-  //fHistoManager = new HistoManager();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 RunAction::~RunAction()
 {
-//  delete fHistoManager
   delete fTimer;
 }
 
@@ -61,28 +58,33 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
 
   G4String position = G4BestUnit((fDetector->GetTargetSize()-fPrimary->GetPosition()),"Length");
 
-  //fFileName = "Data/"+targetName + "-" + targetThickness+"-"+sourceString+"-"+position+"-1mm";
-  fFileName = "/home/iwsatlas1/hayward/Documents/LOSim/Data/Scint_6PMT_Real";
+
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
   fTimer->Start();
-
+  fFileName = "/home/iwsatlas1/hayward/Documents/LOSim/Data/"+fDetector->GetDetectorName();
   fMan->SetVerboseLevel(1);
   fMan->OpenFile(fFileName);
+ //  fMan->CreateH1("Light Output","N Photons Detected",250,0,100000);
+ // fMan->CreateH1("Energy in Target","Deposited energy target [MeV]",500,0,2);
+ // fMan->CreateH1("Light Yield","N Photons Produced",5000,0,10000);
+ // fMan->CreateH1("Yield/Energy Dep [N/MeV]", "N Photons / E Dep[MeV]",1000,0,15000);
+ // fMan->CreateH1("Detected/Produced","Detected/Produced", 100,0,1);
+ // fMan->CreateH1("N Escaped Photons", "N Escaped Photons",1000,0,10000);
+ // fMan->CreateH1("Detected Wavelength [nm]", "Wavelgnth of detected photon [nm]",50,400,500);
 
-  fMan->CreateH1("Light Output","N Photons Detected",250,0,100000);
-  fMan->CreateH1("Energy in Target","Deposited energy target [MeV]",500,0,2);
-  fMan->CreateH1("Light Yield","N Photons Produced",5000,0,10000);
-  fMan->CreateH1("Yield/Energy Dep [N/MeV]", "N Photons / E Dep[MeV]",1000,0,15000);
-  fMan->CreateH1("Detected/Produced","Detected/Produced", 100,0,1);
-  fMan->CreateH1("N Escaped Photons", "N Escaped Photons",1000,0,10000);
-  fMan->CreateH1("Detected Wavelength [nm]", "Wavelgnth of detected photon [nm]",50,400,500);
-
-  fMan->CreateNtuple("CsOnPEN","Cs137Hits");
-  fMan->CreateNtupleDColumn("Event No");
-  fMan->CreateNtupleDColumn("# Produced");
-  fMan->CreateNtupleDColumn("# Detected");
-  fMan->CreateNtupleDColumn("E_dep");
+  //
+  fMan->CreateNtuple("EscapedPhotons","Escapes");
+  fMan->CreateNtupleDColumn("Top");
+  fMan->CreateNtupleDColumn("Botom");
+  fMan->CreateNtupleDColumn("Side");
+  fMan->CreateNtupleDColumn("Total");
+  fMan->CreateNtupleDColumn("Deposited");
   fMan->FinishNtuple();
+}
+
+void RunAction::SetFileName(G4String fileName)
+{
+  fFileName = fileName;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

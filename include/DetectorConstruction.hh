@@ -39,6 +39,7 @@
 #include "DetectorMessenger.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4MaterialPropertiesTable.hh"
+#include "G4GDMLParser.hh"
 class DetectorMessenger;
 class G4LogicalVolume;
 class G4Material;
@@ -64,9 +65,16 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4int GetDetectorType(){return fDetectorType;};
     void SetLY(G4double);
     void SetRes(G4double);
+    void SetABS(G4double);
     void MaterialPropertiesScintillator();
     G4double GetLY(){return fLY;};
     G4double GetRes(){return fRES;};
+    G4double GetABS(){return fABSL;};
+    G4String GetDetectorName(){return fDetectorName;};
+    void SetVolName(G4ThreeVector);
+    G4String GetVolName(){return fVolName;};
+
+    void SetDetectorName(G4String);
 
 
 
@@ -90,12 +98,15 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
     G4double fLY;
     G4double fRES;
+    G4double fABSL;
 
     G4double fThickness;
     G4double fTargetThickness;
     G4MaterialPropertiesTable* fTargetMPT;
     G4MaterialPropertiesTable* fWorldMPT;
 
+    G4double fSiliconPlate_h;
+    G4double fHolderWidth;
 
     G4Material* fWorldMaterial;
     G4Material* fTargetMaterial;
@@ -127,6 +138,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4Material* Pstyrene;
 
     G4int fDetectorType;
+    G4String fDetectorName;
+    G4String fVolName;
 
     DetectorMessenger* fDetectorMessenger;
 };

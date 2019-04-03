@@ -45,6 +45,7 @@ private:
 	DetectorConstruction*      fDetector;
 	G4double		fPhotonWavelength;
 	PrimaryGeneratorMessenger* fGunMessenger;
+	G4ThreeVector fPoint;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

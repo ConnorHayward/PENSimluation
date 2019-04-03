@@ -36,9 +36,11 @@
 
 #include "globals.hh"
 #include "G4UserRunAction.hh"
+#include "RunActionMessenger.hh"
 #include "Analysis.hh"
 class DetectorConstruction;
 class PrimaryGeneratorAction;
+class RunActionMessenger;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -54,6 +56,7 @@ class RunAction : public G4UserRunAction
   public:
     virtual void BeginOfRunAction(const G4Run* aRun);
     virtual void EndOfRunAction(const G4Run* aRun);
+    void SetFileName(G4String);
 
   private:
     G4AnalysisManager* fMan;
@@ -61,6 +64,8 @@ class RunAction : public G4UserRunAction
     DetectorConstruction*   fDetector;
     PrimaryGeneratorAction* fPrimary;
     G4String fFileName;
+
+    RunActionMessenger* fRunActionMessenger;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

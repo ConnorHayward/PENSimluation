@@ -11,6 +11,9 @@
 #include "G4IonTable.hh"
 #include "G4DecayTable.hh"
 #include "G4OpticalPhoton.hh"
+#include "G4VPhysicalVolume.hh"
+
+#include "G4Navigator.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -27,10 +30,11 @@ fDetector(det)
  	//
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4ParticleDefinition* particle = particleTable->FindParticle("e-");
-	fSourceType = 0;
+	fSourceType = 3;
 	fSourceEnergy = 1500*keV;
 	fPhotonWavelength = 0;
 	fParticleName = "void";
+	fPoint = G4ThreeVector();
 	DefineParticle();
 }
 
@@ -44,17 +48,10 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::DefineParticle(){
 
 	// Particle Types
-	// 	0 - perpendicular mono-energetic electrons with fixed position
-	//  1 - 60Co source
-	// 	2 - 137Cs source
-	//	3 - 90Sr source
-	//	4 - 241Am source
-	//	5 - 106Ru source
-	//  6 - 42Ar
-	//	7 - 100 keV point gamma, for position scans.
-	//	8 - 430 nm optical photon source, direction randomized.
-	//	9 - 207Bi source
-	//	10 - Very low energy gamma, Not used.
+	// 	0 - 137Cs source
+	//  1 - Perpendicular gamma with fixed position
+	// 	2 - Perpendicular gamma with random position
+	//	3 - Gamma generated at random point inside named volume
 
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 
@@ -63,21 +60,78 @@ void PrimaryGeneratorAction::DefineParticle(){
 		G4int Z=0, A=0;
 		G4double x,y,z, sum;
 		G4ParticleDefinition* ion;
-		fSourceType = 0;
+		fSourceType = 3;
 		G4ThreeVector position = G4ThreeVector(0,0,60*mm);
+		G4String name;
+		float rx,ry,rz;
 	switch (fSourceType) {
 		case 0:
-				Z = 55;
-				A = 137;
-				ion = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
-				fParticleGun->SetParticleEnergy(0*eV);
-				fParticleGun->SetParticlePosition(position);
-				fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1));
-				fParticleGun->SetParticleDefinition(ion);
-				fParticleGun->SetParticleCharge(ionCharge);
+			Z = 55;
+			A = 137;
+			ion = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
+			fParticleGun->SetParticleEnergy(0*eV);
+			fParticleGun->SetParticlePosition(position);
+			fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1));
+			fParticleGun->SetParticleDefinition(ion);
+			fParticleGun->SetParticleCharge(ionCharge);
 			break;
+		case 1:
+			fParticleGun->SetParticleDefinition(particleTable->FindParticle("gamma"));
+			fParticleGun->SetParticleEnergy(fSourceEnergy);
+			fParticleGun->SetParticlePosition(G4ThreeVector(0*cm,5*cm,-0*mm));
+			fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0,-1,0));
+			//fParticleGun->SetParticleMomentumDirection(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+			break;
+		case 2:
+			fParticleGun->SetParticleDefinition(G4OpticalPhoton::Definition());
+			fParticleGun->SetParticlePolarization(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+			x = 2*(rand()-1);
+			y= 2*(rand()-1);
+			z=2*(rand()-1);
+			sum = 1 / sqrt(x*x + y*y +z*z);
+			fParticleGun->SetParticleEnergy(2.8*eV);
+			fParticleGun->SetParticlePosition(G4ThreeVector(0*mm*x*sum,0*mm*y*sum,0*mm*z*sum));
+			fParticleGun->SetParticleMomentumDirection(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+			break;
+		case 3:
+			fParticleGun->SetParticleDefinition(G4OpticalPhoton::Definition());
+			fParticleGun->SetParticlePolarization(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+			rx = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			ry = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			rz = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			x = (rx-1);
+			y= (ry-1);
+			z=(rz-1);
+			fParticleGun->SetParticleEnergy(2.145*eV);
+			fParticleGun->SetParticlePosition(G4ThreeVector(15*mm*x,15*mm*y,0*mm*z));
+			fParticleGun->SetParticleMomentumDirection(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+
+			fPoint = G4ThreeVector(15*mm*x,15*mm*y,1.5*mm*z);
+
+				fParticleGun->SetParticlePosition(G4ThreeVector(fPoint));
+
+				break;
+
+		case 4:
+			fParticleGun->SetParticleDefinition(G4OpticalPhoton::Definition());
+			fParticleGun->SetParticlePolarization(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+			fParticleGun->SetParticleEnergy(3.262742*eV);
+			fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1,0,0));
+
+			G4double radius = 2.5*mm;
+
+			rx = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			ry = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			x = (rx);
+			y= (ry)*2*3.14159265;
+			G4double rradius = rx*radius;
+
+			fParticleGun->SetParticlePosition(G4ThreeVector(rradius*cos(y),rradius*sin(y),0));
+			break;
+
 	}
-	SetParticleName(Z,A,excitEnergy);
+	G4cout<<"---------------------------------------------------------------------------------------"<<G4endl;
+	//SetParticleName(Z,A,excitEnergy);
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -85,11 +139,75 @@ void PrimaryGeneratorAction::DefineParticle(){
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
+
+	fSourceType = 3;
+	G4String name;
 	double x,y,z,sum;
-	if(fSourceType==0){
-	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));}
-//	G4cout << "Test 2" <<G4endl;
-	fParticleGun->GeneratePrimaryVertex(anEvent);
+	float rx,ry,rz;
+	if(fSourceType==2 || fSourceType==1){
+		fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0,-1,0));}
+	else if (fSourceType==3){
+		for(int i = 0;i<1;i++){
+			fParticleGun->SetParticleDefinition(G4OpticalPhoton::Definition());
+			fParticleGun->SetParticlePolarization(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+			rx = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			ry = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			rz= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			x = (rx-1);
+			y= (ry-1);
+			z=(rz-1);
+			fParticleGun->SetParticleEnergy(2.145*eV);
+			fParticleGun->SetParticleMomentumDirection(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+
+			fPoint = G4ThreeVector(15*mm*x,15*mm*y,1.5*mm*z);
+			// G4cout << fPoint << G4endl;
+			// fDetector->SetVolName(fPoint);
+			// name = fDetector->GetVolName();
+
+				// while(name!="rod"){
+				// 	// Get and set new point x,y,z
+				// 	rx = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				// 	ry = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				// 	rz= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				//
+				// 	x = (rx-1);
+				// 	y= (ry-1);
+				// 	z=(rz-1);
+				//
+				// 	fPoint.setX(x*15*mm);
+				// 	fPoint.setY(y*15*mm);
+				// 	fPoint.setZ(z*1.5*mm);
+				//
+				// 	fDetector->SetVolName(fPoint);
+				//
+				// 	name = fDetector->GetVolName();
+				//
+				//  }
+				 fParticleGun->SetParticlePosition(G4ThreeVector(fPoint));
+				 	fParticleGun->GeneratePrimaryVertex(anEvent);
+		}
+
+	}
+	else if (fSourceType=4){
+			fParticleGun->SetParticleDefinition(G4OpticalPhoton::Definition());
+			fParticleGun->SetParticlePolarization(G4ThreeVector(2*(rand()-1),2*(rand()-1),2*(rand()-1)));
+			//fParticleGun->SetParticleEnergy(3.262742*eV);
+
+			 fParticleGun->SetParticleMomentumDirection(G4ThreeVector(-1,0,0));
+ 		//	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0,0,-1));
+			G4double radius = 1.25*mm;
+
+			rx = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			ry = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			x = (rx);
+			y= (ry)*2*3.14159265;
+			G4double rradius = rx*radius;
+
+			fParticleGun->SetParticleEnergy(3.262742*eV);
+			// fParticleGun->SetParticlePosition(G4ThreeVector(+2*cm,rradius*sin(y),rradius*cos(y)));
+			fParticleGun->SetParticlePosition(G4ThreeVector(1*cm,rradius*sin(y),rradius*cos(y)+1*cm));
+	}
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

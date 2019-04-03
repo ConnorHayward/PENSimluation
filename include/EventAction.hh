@@ -29,6 +29,10 @@ class EventAction : public G4UserEventAction
     G4double   GetNumerProducedPhotons(void){return fProducedPhotons;};
     void AddEscapedPhoton(void){fEscapedPhoton++;};
     G4double GetNumberEscapedPhoton(void){return fEscapedPhoton;};
+    void AddTopPhoton(void){fTopPhoton++;};
+    void AddBottomPhoton(void){fBottomPhoton++;};
+    void AddSidePhoton(void){fSidePhoton++;};
+    void AddAbsorbedPhoton(void){fAbsorbedPhoton++;};
 
   private:
     RunAction* 	fRunAction;
@@ -37,6 +41,10 @@ class EventAction : public G4UserEventAction
     G4double fDetectedPhotons;
     G4double        fDepositedEnergy;
     G4double        fDepositedEnergyA;
+    G4double fTopPhoton;
+    G4double fBottomPhoton;
+    G4double fSidePhoton;
+    G4double fAbsorbedPhoton;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

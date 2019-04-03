@@ -1,6 +1,6 @@
 #include "SteppingAction.hh"
 #include "EventAction.hh"
-
+#include "Analysis.hh"
 #include "G4SteppingManager.hh"
 #include "G4SDManager.hh"
 #include "G4EventManager.hh"
@@ -31,11 +31,11 @@ SteppingAction::~SteppingAction() {}
 
 void SteppingAction::UserSteppingAction(const G4Step * theStep)
 {
-
+	auto analysisManager = G4AnalysisManager::Instance();
 	G4Track* theTrack = theStep->GetTrack();
 
 	if ( theTrack->GetCurrentStepNumber() == 1 && theTrack->GetDefinition()==G4OpticalPhoton::OpticalPhotonDefinition() ) {
-		fEventAction->AddProducedPhoton();
+		// fEventAction->AddProducedPhoton();
 	}
 	fExpectedNextStatus = Undefined;
 
@@ -44,17 +44,18 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
 
 	if ( thePrePV->GetName()=="target"){
 
-		fEventAction->AddDepositedEnergy(theStep->GetTotalEnergyDeposit()/MeV);
+		// fEventAction->AddDepositedEnergy(theStep->GetTotalEnergyDeposit()/MeV);
 	}
+
 	if (thePrePV->GetName()=="absorber"){
-		fEventAction->AddDepositedEnergyA(theStep->GetTotalEnergyDeposit()/MeV);
+		// fEventAction->AddDepositedEnergyA(theStep->GetTotalEnergyDeposit()/MeV);
 	}
 
 	G4StepPoint* thePostPoint = theStep->GetPostStepPoint();
 	G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
-	 if (thePrePV->GetName()=="target"&&theTrack->GetDefinition()==G4OpticalPhoton::OpticalPhotonDefinition()){
-		 if(thePostPV->GetName() != "target"){
-			 fEventAction->AddEscapedPhoton();
+	 if (thePrePV->GetName()=="vessel_mesh_vol_PV"&&theTrack->GetDefinition()==G4OpticalPhoton::OpticalPhotonDefinition()){
+		 if(thePostPV->GetName() != "vessel_mesh_vol_PV"){
+			  // fEventAction->AddEscapedPhoton();
 		 }
 	 }
 
@@ -108,13 +109,36 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
 	  		fExpectedNextStatus=Undefined;
 	  		switch(boundaryStatus){
 		  		case Absorption:
-
+					{
+						// fEventAction->AddAbsorbedPhoton();
+					}
 
 		  			break;
 		      	case Detection:
 		      	{
-							fEventAction->AddWavelength(G4double(1240/(theTrack->GetKineticEnergy()/eV)));
 							fEventAction->AddDetectedPhoton();
+							G4String det = thePostPV->GetName();
+
+							fEventAction->AddWavelength(G4double(1240/(theTrack->GetKineticEnergy()/eV)));
+							// if (det == "top_det"){
+							// 	fEventAction->AddTopPhoton();
+							// }
+							// else if (det == "bottom_det"){
+							// 	fEventAction->AddBottomPhoton();
+							// }
+							// else if (det == "side_det"){
+							// 	fEventAction->AddSidePhoton();
+							// }
+
+							// if (det == "active_detector"){
+							// 	fEventAction->AddBottomPhoton();
+							// }
+							// else if (det == "active_detector1"||det == "active_detector2"||det == "active_detector3"||det == "active_detector4"){
+							// 	fEventAction->AddSidePhoton();
+							// }
+							// else if (det == "active_detector5"){
+							// 	fEventAction->AddTopPhoton();
+							// }
 			      	break;
 		      	}
 		      	case FresnelReflection:
