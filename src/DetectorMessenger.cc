@@ -8,6 +8,12 @@
 #include "G4UIcmdWithoutParameter.hh"
 #include "G4UIcmdWithAnInteger.hh"
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// Control for the geometry. Commands used in the macro file
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
 :G4UImessenger(),fDetector(Det),
  fPENDir(0),
