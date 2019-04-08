@@ -449,7 +449,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   siPM_placement = new G4PVPlacement(0, G4ThreeVector(0,0,-2.5*cm),tile_detector,"spec",fWLBox,false,0,true);
 
   G4OpticalSurface* AirPEN = new G4OpticalSurface("AirPEN",glisur, ground, dielectric_dielectric);
-  AirPEN -> SetPolish(0.8);
+  AirPEN -> SetPolish(fSigAlpha);
   AirPEN -> SetMaterialPropertiesTable(fTargetMPT);
 
   G4LogicalBorderSurface* surfaceAirPEN = new G4LogicalBorderSurface("AirPEN",fWPBox,fPBox,AirPEN);
