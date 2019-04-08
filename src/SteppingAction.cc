@@ -34,36 +34,17 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
 	auto analysisManager = G4AnalysisManager::Instance();
 	G4Track* theTrack = theStep->GetTrack();
 
-	if ( theTrack->GetCurrentStepNumber() == 1 && theTrack->GetDefinition()==G4OpticalPhoton::OpticalPhotonDefinition() ) {
-		// fEventAction->AddProducedPhoton();
-	}
 	fExpectedNextStatus = Undefined;
 
 	G4StepPoint* thePrePoint = theStep->GetPreStepPoint();
 	G4VPhysicalVolume* thePrePV = thePrePoint->GetPhysicalVolume();
 
-	if ( thePrePV->GetName()=="target"){
-
-		// fEventAction->AddDepositedEnergy(theStep->GetTotalEnergyDeposit()/MeV);
-	}
-
-	if (thePrePV->GetName()=="absorber"){
-		// fEventAction->AddDepositedEnergyA(theStep->GetTotalEnergyDeposit()/MeV);
-	}
 
 	G4StepPoint* thePostPoint = theStep->GetPostStepPoint();
 	G4VPhysicalVolume* thePostPV = thePostPoint->GetPhysicalVolume();
-	 if (thePrePV->GetName()=="vessel_mesh_vol_PV"&&theTrack->GetDefinition()==G4OpticalPhoton::OpticalPhotonDefinition()){
-		 if(thePostPV->GetName() != "vessel_mesh_vol_PV"){
-			  // fEventAction->AddEscapedPhoton();
-		 }
-	 }
 
 	G4OpBoundaryProcessStatus boundaryStatus=Undefined;
 	static G4ThreadLocal G4OpBoundaryProcess* boundary=NULL;
-
-	//G4OpBoundaryProcessStatus boundaryStatus2 = Absorption;
-	//G4cout << boundaryStatus2.name() << G4endl;
 
   //find the boundary process only once
 	if(!boundary){
@@ -109,11 +90,6 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
 	  		fExpectedNextStatus=Undefined;
 	  		switch(boundaryStatus){
 		  		case Absorption:
-					{
-						// fEventAction->AddAbsorbedPhoton();
-					}
-
-		  			break;
 		      	case Detection:
 		      	{
 							fEventAction->AddDetectedPhoton();
