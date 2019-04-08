@@ -71,6 +71,7 @@ DetectorConstruction::DetectorConstruction()
   fDetectorType = 0;
   fABSL = 1;
   fRES=4.0;
+  fSigAlpha = 0.5;
   fLY=10500./MeV;
   fDetectorName = "6pmt_coverage_pe";
   fVolName = "World";
@@ -105,6 +106,12 @@ void DetectorConstruction::SetLY(G4double value){
 
 void DetectorConstruction::SetRes(G4double value){
   fRES=value;
+  UpdateGeometry();
+
+}
+
+void DetectorConstruction::SetSigAlpha(G4double value){
+  fSigAlpha = value;
   UpdateGeometry();
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }

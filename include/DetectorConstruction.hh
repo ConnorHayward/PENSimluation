@@ -66,6 +66,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetLY(G4double);
     void SetRes(G4double);
     void SetABS(G4double);
+    void SetSigAlpha(G4double);
+    G4double GetSigmaAlpha(){return fSigAlpha;};
     void MaterialPropertiesScintillator();
     G4double GetLY(){return fLY;};
     G4double GetRes(){return fRES;};
@@ -99,6 +101,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double fLY;
     G4double fRES;
     G4double fABSL;
+    G4double fSigAlpha;
 
     G4double fThickness;
     G4double fTargetThickness;

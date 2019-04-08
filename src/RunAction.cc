@@ -61,18 +61,18 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
 
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
   fTimer->Start();
-  fFileName = "/home/iwsatlas1/hayward/Documents/Simulations/AlphaCamSim/Data/"+fDetector->GetDetectorName();
-  fMan->SetVerboseLevel(1);
+  fFileName = "Data/"+fDetector->GetDetectorName();
   fMan->OpenFile(fFileName);
 
   //
-  fMan->CreateNtuple("EscapedPhotons","Escapes");
-  fMan->CreateNtupleDColumn("Top");
-  fMan->CreateNtupleDColumn("Botom");
-  fMan->CreateNtupleDColumn("Side");
-  fMan->CreateNtupleDColumn("Total");
-  fMan->CreateNtupleDColumn("Deposited");
+  fMan->CreateNtuple("Detections","");
+  fMan->CreateNtupleDColumn("Sigma");
+  fMan->CreateNtupleDColumn("Count");
+  fMan->CreateNtupleDColumn("x");
+  fMan->CreateNtupleDColumn("y");
   fMan->FinishNtuple();
+
+  fMan->FillNtupleDColumn(0,fDetector->GetSigmaAlpha());
 }
 
 void RunAction::SetFileName(G4String fileName)
