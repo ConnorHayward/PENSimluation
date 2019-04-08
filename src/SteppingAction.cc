@@ -119,26 +119,10 @@ void SteppingAction::UserSteppingAction(const G4Step * theStep)
 							fEventAction->AddDetectedPhoton();
 							G4String det = thePostPV->GetName();
 
-							fEventAction->AddWavelength(G4double(1240/(theTrack->GetKineticEnergy()/eV)));
-							// if (det == "top_det"){
-							// 	fEventAction->AddTopPhoton();
-							// }
-							// else if (det == "bottom_det"){
-							// 	fEventAction->AddBottomPhoton();
-							// }
-							// else if (det == "side_det"){
-							// 	fEventAction->AddSidePhoton();
-							// }
-
-							// if (det == "active_detector"){
-							// 	fEventAction->AddBottomPhoton();
-							// }
-							// else if (det == "active_detector1"||det == "active_detector2"||det == "active_detector3"||det == "active_detector4"){
-							// 	fEventAction->AddSidePhoton();
-							// }
-							// else if (det == "active_detector5"){
-							// 	fEventAction->AddTopPhoton();
-							// }
+							auto analysisManager = G4AnalysisManager::Instance();
+							G4ThreeVector position = thePostPoint->GetPosition();
+							analysisManager->FillNtupleDColumn(0,2,position.getX());
+							analysisManager->FillNtupleDColumn(0,3,position.getY());
 			      	break;
 		      	}
 		      	case FresnelReflection:
