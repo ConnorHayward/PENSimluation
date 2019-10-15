@@ -1,3 +1,14 @@
+/*! \file DetectorConstruction.cc
+  \brief Implementation of the DetectorConstruction class
+*/
+/*! \fn DetectorConstruction DetectorConstruction()
+    \brief Constructs DetectorConstruction, defines default values
+*/
+/// \brief Implementation of the DetectorConstruction class
+/*! \fn DetectorConstruction DetectorConstruction()
+    \brief Constructs DetectorConstruction, defines default values
+    */
+
 #include "DetectorConstruction.hh"
 #include "DetectorMessenger.hh"
 #include "SiliconPlateConstruction.hh"
@@ -53,11 +64,6 @@
 
 using namespace std;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-/*
-Constructs DetectorConstruction, defines default values.
-*/
 DetectorConstruction::DetectorConstruction()
  : G4VUserDetectorConstruction(),fPBox(nullptr), fLBox(nullptr),
   fBox(nullptr)
@@ -83,10 +89,10 @@ DetectorConstruction::DetectorConstruction()
 
 DetectorConstruction::~DetectorConstruction(){;}
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-/*
-Sets thickness of target.
+/*! \fn void SetSize(G4double value)
+  \brief Sets thickness (z) of target
 */
+
 void DetectorConstruction::SetSize(G4double value){
   fTargetThickness=value;
   if(fBox){
@@ -97,11 +103,19 @@ void DetectorConstruction::SetSize(G4double value){
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
+/********************************************//**
+*  \fn  Sets light yield, SCINTILLATIONYIELD, for scintillation target
+***********************************************/
+
 void DetectorConstruction::SetLY(G4double value){
   fLY=value;
   UpdateGeometry();
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
+
+/********************************************//**
+*  \fn Sets sigma used for energy resolution of scintillation target.
+***********************************************/
 
 void DetectorConstruction::SetRes(G4double value){
   fRES=value;
@@ -109,9 +123,9 @@ void DetectorConstruction::SetRes(G4double value){
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
-/*
-Sets which detector geometry is used.
-*/
+/********************************************//**
+*  \fn Sets which detector geometry is used.
+***********************************************/
 void DetectorConstruction::SetDetectorType(G4int value){
   fDetectorType=value;
 
@@ -119,12 +133,19 @@ void DetectorConstruction::SetDetectorType(G4int value){
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
+/********************************************//**
+* \fn  Sets a non-wavelength depenendant ABS length for target material.
+***********************************************/
 void DetectorConstruction::SetABS(G4double value){
   fABSL=value;
 
   UpdateGeometry();
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
+
+/********************************************//**
+*  Sets the name used for generating the output filename.
+***********************************************/
 
 void DetectorConstruction::SetDetectorName(G4String name){
   fDetectorName=name;
@@ -133,9 +154,9 @@ void DetectorConstruction::SetDetectorName(G4String name){
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
-/*
-Sets material of target.
-*/
+/********************************************//**
+*  Sets the material of the target.
+***********************************************/
 void DetectorConstruction::SetTargetMaterial(G4String materialChoice)
 {
   // search the material by its name
@@ -153,9 +174,9 @@ void DetectorConstruction::SetTargetMaterial(G4String materialChoice)
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
-/*
-Sets material of world volume.
-*/
+/********************************************//**
+*  Sets the material of the world volume.
+***********************************************/
 void DetectorConstruction::SetWorldMaterial(G4String materialChoice)
 {
   // search the material by its name
@@ -172,9 +193,11 @@ void DetectorConstruction::SetWorldMaterial(G4String materialChoice)
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
-/*
-Defines materials used in simulation. Sets material properties for PEN and other optical components.
-*/
+
+/********************************************//**
+*  Defines list of material used in simulation. Sets material properties of PEN and other optical components.
+***********************************************/
+
 void DetectorConstruction::DefineMaterials(){// ------------- Materials -------------
   G4double a, z, density;
   G4int nelements;
@@ -261,6 +284,9 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
   G4int absEntries = 0;
   ifstream ReadAbs;
 
+  /********************************************//**
+  *  Reads in the wavelength from file / contant value (depends on line 300).
+  ***********************************************/
   G4String abs_file = "../input_files/Exp4_long.csv";
   G4double emission_fibre[102]={0};
   ReadAbs.open(abs_file);
@@ -296,6 +322,10 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
 
   G4double uv_range[2]={3.099605,5.0};
   G4double uv_abs[2]={0.00001,0.00001};
+
+  /********************************************//**
+  *  Defines the material properties of PEN
+  ***********************************************/
 
   fTargetMPT->AddProperty("WLSABSLENGTH",uv_range,abs,2)->SetSpline(true);
   fTargetMPT->AddProperty("WLSCOMPONENT",absEnergy, emission_fibre, nEntries1)->SetSpline(true);
@@ -504,6 +534,12 @@ void DetectorConstruction::DefineMaterials(){// ------------- Materials --------
   fScintilator->SetMaterialPropertiesTable(MPT);
 }
 
+/********************************************//**
+*  Gets the name of the physical volume that thePoint is located within.
+*  Used to check where the generated particles are made.
+*  @param thePoint a G4ThreeVector for the space that should be checked.
+***********************************************/
+
 void DetectorConstruction::SetVolName(G4ThreeVector thePoint){
   G4Navigator* theNavigator = G4TransportationManager::GetTransportationManager()->GetNavigatorForTracking();
   G4VPhysicalVolume* myVolume= theNavigator->LocateGlobalPointAndSetup(thePoint);
@@ -513,6 +549,11 @@ void DetectorConstruction::SetVolName(G4ThreeVector thePoint){
 void DetectorConstruction::SetPropertyTable(G4Material* material, G4MaterialPropertiesTable* table){
   material->SetMaterialPropertiesTable(table);
 }
+
+/********************************************//**
+*  Updates all the material properties and updates geometry.
+* Must be called if the macros are used (called by default).
+***********************************************/
 
 void DetectorConstruction::UpdateGeometry(){
   G4RunManager::GetRunManager()->DefineWorldVolume(Construct());
@@ -525,6 +566,12 @@ Builds and places volumes in world.
 
 Defines detector sensitivities and properties.
 */
+
+/********************************************//**
+*  Clears stored geometry, then constructs all volumes that can be used in the simulation.
+*  Builds and places volumes in world.
+*  Defines detector sensitivities and properties.
+***********************************************/
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
     G4GDMLParser parser;
@@ -965,7 +1012,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   /*
   0 - PMT on base of tile, collimator included.
   */
-  fDetectorType = 0;
+  fDetectorType = 1;
   switch (fDetectorType){
     case 0:
        fPBox = new G4PVPlacement(0, G4ThreeVector(0,0,0),fLBox,"rod",fWLBox,false,0,true);

@@ -42,6 +42,7 @@
 #include "EventAction.hh"
 #include "SteppingAction.hh"
 
+/// \fn void BuildForMaster()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

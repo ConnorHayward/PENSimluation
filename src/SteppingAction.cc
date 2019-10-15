@@ -1,3 +1,6 @@
+/// \file SteppingAction.cc
+/// \brief Implementation of the SteppingAction class
+
 #include "SteppingAction.hh"
 #include "EventAction.hh"
 #include "Analysis.hh"

@@ -1,3 +1,6 @@
+/// \file DetectorMessengercc
+/// \brief Implementation of the DetectorMessenger class
+
 #include "DetectorMessenger.hh"
 
 #include "DetectorConstruction.hh"
@@ -8,11 +11,9 @@
 #include "G4UIcmdWithoutParameter.hh"
 #include "G4UIcmdWithAnInteger.hh"
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// Control for the geometry. Commands used in the macro file
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/********************************************//**
+ * Control for geometry. Commands used in the macro file
+ ***********************************************/
 
 DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
 :G4UImessenger(),fDetector(Det),
@@ -27,17 +28,29 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
   fDetDir = new G4UIdirectory("/PEN/det/");
   fDetDir->SetGuidance("detector construction commands");
 
+  /********************************************//**
+  *  Set the material of the target. Accepts any G4Material as arguement.
+  ***********************************************/
+
   fTMaterCMD = new G4UIcmdWithAString("/PEN/det/setTargetMat",this);
   fTMaterCMD->SetGuidance("Select material of the target.");
   fTMaterCMD->SetParameterName("choice",false);
   fTMaterCMD->AvailableForStates(G4State_PreInit,G4State_Idle);
   fTMaterCMD->SetToBeBroadcasted(false);
 
+  /********************************************//**
+  *  Set the material of the surrounding world volume. Accepts G4Materials as arguement.
+  ***********************************************/
+
   fWMaterCMD = new G4UIcmdWithAString("/PEN/det/setWorldMat",this);
   fWMaterCMD->SetGuidance("Select material of the world.");
   fWMaterCMD->SetParameterName("choice",false);
   fWMaterCMD->AvailableForStates(G4State_PreInit,G4State_Idle);
   fWMaterCMD->SetToBeBroadcasted(false);
+
+  /********************************************//**
+  *  Sets the x, y, z size of the target volume, if the volume is a box.
+  ***********************************************/
 
   fSizeCMD = new G4UIcmdWithADoubleAndUnit("/PEN/det/setSize",this);
   fSizeCMD->SetGuidance("Set size of the box");
@@ -47,10 +60,18 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
   fSizeCMD->AvailableForStates(G4State_PreInit,G4State_Idle);
   fSizeCMD->SetToBeBroadcasted(false);
 
+  /********************************************//**
+  *  Sets which predetermined detector geometry will be loaded.
+  ***********************************************/
+
   fTypeCMD = new G4UIcmdWithAnInteger("/PEN/det/setDetectorType",this);
   fTypeCMD->SetGuidance("Set detector type");
   fTypeCMD->AvailableForStates(G4State_PreInit,G4State_Idle);
   fTypeCMD->SetToBeBroadcasted(false);
+
+  /********************************************//**
+  *  Sets the light yield in photon / MeV of target material.
+  ***********************************************/
 
   fLYCMD = new G4UIcmdWithADouble("/PEN/det/setLY",this);
   fLYCMD->SetGuidance("Set scint LY");
@@ -58,15 +79,27 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
   fLYCMD->AvailableForStates(G4State_PreInit,G4State_Idle);
   fLYCMD->SetToBeBroadcasted(false);
 
+  /********************************************//**
+  *  Sets the sigma for the energy resolution of the target scintillator.
+  ***********************************************/
+
   fResCMD = new G4UIcmdWithADouble("/PEN/det/setRes",this);
   fResCMD->SetGuidance("Set Res");
   fResCMD->AvailableForStates(G4State_PreInit,G4State_Idle);
   fResCMD->SetToBeBroadcasted(false);
 
+  /********************************************//**
+  *  Sets a constant absorption length, in metres, for target material.
+  ***********************************************/
+
   fABSCMD = new G4UIcmdWithADouble("/PEN/det/setABS",this);
   fABSCMD->SetGuidance("Set ABS");
   fABSCMD->AvailableForStates(G4State_Init,G4State_Idle);
   fABSCMD->SetToBeBroadcasted(false);
+
+  /********************************************//**
+  *  Sets the detector name, used for output filename generation.
+  ***********************************************/
 
   fDetNameCMD = new G4UIcmdWithAString("/PEN/det/setDetName",this);
   fDetNameCMD->SetGuidance("Set detetector file name.");

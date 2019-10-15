@@ -1,3 +1,6 @@
+/// \file EventAction.cc
+/// \brief Implementation of the EventAction class
+
 #include "EventAction.hh"
 #include "RunAction.hh"
 #include "Analysis.hh"

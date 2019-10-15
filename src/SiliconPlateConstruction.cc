@@ -6,6 +6,11 @@
 #include "G4Tubs.hh"
 #include "SiliconPlateConstruction.hh"
 
+/********************************************//**
+ *  Construct approximated GEANT4 geometry for LEGEND silicon plate
+ *  Adapted from implementation from MaGe.
+ ***********************************************/
+
 G4VSolid* SiliconPlateConstruction::ConstructPlate(){
   fSiliconPlate_h = 1.5*mm;
   fHolderWidth=90.00*mm;

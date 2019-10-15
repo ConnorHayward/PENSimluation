@@ -1,4 +1,5 @@
-// Make this appear first!
+/// \file RunAction.cc
+/// \brief Implementation of the RunAction class
 #include "G4Timer.hh"
 
 #include "RunAction.hh"

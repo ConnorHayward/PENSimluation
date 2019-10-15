@@ -1,3 +1,6 @@
+/// \file PhysicsList.cc
+/// \brief Implementation of the PhysicsList class
+
 #include "globals.hh"
 #include "PhysicsList.hh"
 
