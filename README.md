@@ -29,6 +29,4 @@ Input values for PEN in the simulation:
 |Yield Ratio|0.05| MPhys Thesis|
 |Resolution Scale | 4.0 | Nemo Simulation|
 
-![alt text][logo]
-
-[logo]: https://github.com/ConnorHayward/PENSimulation/blob/PMTSimulation/input_files/images/pen_ems.pdf "Logo Title Text 2"
+![alt text](https://github.com/ConnorHayward/PENSimulation/blob/PMTSimulation/input_files/images/pen_ems.png "Logo Title Text 2")
