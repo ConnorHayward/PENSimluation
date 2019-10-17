@@ -3,7 +3,7 @@
 Working branch for GEANT4 simulaiton of 6 PMT set up for measuring the light yield of PEN.
 
 Includes predefined geometry for existing 6 PMT set up at MPI, including all 6 PMTs, 3d printed holding strucutre, table and aluminium breadboard.
-Also includes model of the 3d printed "sandwhich" used to encase the Cs137 source, which is also modeled.
+Also includes model of the 3d printed "sandwich" used to encase the Cs137 source, which is also modeled.
 
 The following data files are produced:
 
@@ -23,4 +23,8 @@ Input values for PEN in the simulation:
 
 | Property | Value | Reference |
 |:--------:|:-----:|:---------:|
-|Light Yield|10500 photon/MeV|Nakamura|
+|Light Yield|10500 photon / MeV|Nakamura|
+|Fast Time Constant| 5.198 ns | MPhys Thesis|
+|Slow Time Constant| 24.336 ns | MPhys Thesis|
+|Yield Ratio|0.05| MPhys Thesis|
+|Resolution Scale | 4.0 | Nemo Simulation
