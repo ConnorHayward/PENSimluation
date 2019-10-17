@@ -28,8 +28,15 @@ Input values for PEN in the simulation:
 |Slow Time Constant| 24.336 ns | MPhys Thesis|
 |Yield Ratio|0.05| MPhys Thesis|
 |Resolution Scale | 4.0 | Nemo Simulation|
+|Refractive Index | 1.65 | Lancaster|
 |Emission Spectrum |![alt text](https://github.com/ConnorHayward/PENSimulation/blob/PMTSimulation/input_files/images/pen_ems.png "Emission Spectrum") | MPhys Thesis|
 |Abs Spectrum | ![alt text](https://github.com/ConnorHayward/PENSimulation/blob/PMTSimulation/input_files/images/pen_abs.png "Absorption Spectrum") | MPhys Thesis|
+
+Properties of PMTs:
+| Property | Value | Reference |
+|:--------:|:-----:|:---------:|
+|Quantum Efficiency|![alt text](https://github.com/ConnorHayward/PENSimulation/blob/PMTSimulation/input_files/images/pmt_qe.png "QE Spectrum") |Hamamatsu|
+
 
 
 
