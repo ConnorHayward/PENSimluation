@@ -1,9 +1,11 @@
-# PENSimulation
-GEANT4 Simulation for optimizing thickness of shielding.
+# LOSim
 
-Simulates various sources of radiation incident on a target. Target thickness and material can be controlled via macro, as can the source type and energy. Includes geometry for detection of scintillation photons in a PMT coupled to the base of the tile, or two SiPMs coupled to the side of the tile.
+Working branch for GEANT4 simulaiton of 6 PMT set up for measuring the light yield of PEN.
 
-The following histograms are produced:
+Includes predefined geometry for existing 6 PMT set up at MPI, including all 6 PMTs, 3d printed holding strucutre, table and aluminium breadboard.
+Also includes model of the 3d printed "sandwhich" used to encase the Cs137 source, which is also modeled.
+
+The following data files are produced:
 
 Light Output - number of photons detected at the chosen detector type.
 Energy deposited in target, in MeV.
@@ -17,56 +19,8 @@ cmake -DGeant4_DIR=/opt/geant4/lib64/Geant4-10.3.0 ..
 
 This creates the makefile as needed. Then, run make to create the simulation. ./PEN runs the program.
 
-Additional macro commands and cases:
+Input values for PEN in the simulation:
 
-/PEN/det/setTargetMat [material]
-
-Set the target material to supplied material. Material must be loaded in Geant4 prior to calling. Default to air.
-
-Materials provided:
-
-G4_TEFLON
-G4_Al
-G4_Si
-G4_Cu
-Water
-G4_Pyrex_Glass
-PEN
-Galactic - vacuum
-
-/PEN/det/setWorldMat [material]
-
-Set the material for the world volume. Default to air.
-
-Tested cases:
-
-air
-Galactic - vacuum
-
-/PEN/det/setSize [number with unit]
-
-Set target thickness to supplied value.
-
-NB: The simulation generates the name of the file automatically using the BestUnit function. Using a thickness that is converted to a decimal value (15 mm becomes 1.5 cm) causes issues with file naming.
-
-/PEN/det/setDetectorType [int 0-1]
-
-Set detector type. Default 0.
-
-  0 - PMT coupled to base of target.
-  1 - 2 SiPMs, coupled to the side of the target.
-
-/PEN/gun/sourceType [int 0-6]
-
-Choose the type of source used in the simulation. Allowed cases:
-
-  0 - perpendicular mono-energetic gamma with fixed position - use with /PEN/gun/sourceEnergy
-  1 - 60Co source
-  2 - 137Cs source
-  3 - 90Sr source
-	4 - 241Am source
-	5 - 106Ru source
-
-/PEN/gun/sourceEnergy [number with unit]
-
-Set energy for the mono-energetic gamma. Automatically sets source type to 0.
+| Property | Value | Reference |
+|:--------:|:-----:|:---------:|
+|Light Yield|10500 photon/MeV|Nakamura|
