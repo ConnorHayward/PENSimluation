@@ -33,6 +33,7 @@ Input values for PEN in the simulation:
 |Abs Spectrum | ![alt text](https://github.com/ConnorHayward/PENSimulation/blob/PMTSimulation/input_files/images/pen_abs.png "Absorption Spectrum") | MPhys Thesis|
 
 Properties of PMTs:
+
 | Property | Value | Reference |
 |:--------:|:-----:|:---------:|
 |Quantum Efficiency|![alt text](https://github.com/ConnorHayward/PENSimulation/blob/PMTSimulation/input_files/images/pmt_qe.png "QE Spectrum") |Hamamatsu|
